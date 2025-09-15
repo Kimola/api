@@ -4,6 +4,14 @@ Kimola is a research and analysis platform that helps businesses understand cust
 
 This repository hosts the official documentation for the Kimola API. It includes details about available endpoints, authentication, usage examples, and guidelines for integrating Kimola’s research features into your applications.
 
+- [Getting Started](#getting-started)
+- [Authentication](#authentication)
+- [Resources](#resources)
+- [Endpoints](#endpoints)
+  - [Presets](#get-presets)
+  - [Queries](#get-queries)
+  - [Subscription](#get-subscriptionusage)
+
 &nbsp;
 
 ## Getting Started
