@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "QuickStart/1.0.0": {
+        "dependencies": {
+          "Kimola.Api": "0.1.0"
+        },
+        "runtime": {
+          "QuickStart.dll": {}
+        }
+      },
+      "Kimola.Api/0.1.0": {
+        "runtime": {
+          "Kimola.Api.dll": {
+            "assemblyVersion": "0.1.0",
+            "fileVersion": "0.1.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "QuickStart/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Kimola.Api/0.1.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

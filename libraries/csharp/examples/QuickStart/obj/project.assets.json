@@ -1,0 +1,95 @@
+{
+  "version": 3,
+  "targets": {
+    "net9.0": {
+      "Kimola.Api/0.1.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/Kimola.Api.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Kimola.Api.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Kimola.Api/0.1.0": {
+      "type": "project",
+      "path": "../../src/Kimola.Api/Kimola.Api.csproj",
+      "msbuildProject": "../../src/Kimola.Api/Kimola.Api.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net9.0": [
+      "Kimola.Api >= 0.1.0"
+    ]
+  },
+  "packageFolders": {
+    "/Users/tugbaergen/.nuget/packages/": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "/Users/tugbaergen/Documents/Kimola.CSharp.SDK/examples/QuickStart/QuickStart.csproj",
+      "projectName": "QuickStart",
+      "projectPath": "/Users/tugbaergen/Documents/Kimola.CSharp.SDK/examples/QuickStart/QuickStart.csproj",
+      "packagesPath": "/Users/tugbaergen/.nuget/packages/",
+      "outputPath": "/Users/tugbaergen/Documents/Kimola.CSharp.SDK/examples/QuickStart/obj/",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/Users/tugbaergen/.nuget/NuGet/NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net9.0"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "projectReferences": {
+            "/Users/tugbaergen/Documents/Kimola.CSharp.SDK/src/Kimola.Api/Kimola.Api.csproj": {
+              "projectPath": "/Users/tugbaergen/Documents/Kimola.CSharp.SDK/src/Kimola.Api/Kimola.Api.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.100"
+    },
+    "frameworks": {
+      "net9.0": {
+        "targetAlias": "net9.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

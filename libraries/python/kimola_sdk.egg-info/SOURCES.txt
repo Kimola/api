@@ -1,0 +1,15 @@
+README.md
+pyproject.toml
+kimola/__init__.py
+kimola/client.py
+kimola/config.py
+kimola/transport.py
+kimola/models/__init__.py
+kimola/resources/presets.py
+kimola/resources/queries.py
+kimola/resources/subscription.py
+kimola_sdk.egg-info/PKG-INFO
+kimola_sdk.egg-info/SOURCES.txt
+kimola_sdk.egg-info/dependency_links.txt
+kimola_sdk.egg-info/requires.txt
+kimola_sdk.egg-info/top_level.txt

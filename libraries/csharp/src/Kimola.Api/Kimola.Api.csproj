@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <Authors>Kimola</Authors>
+    <Company>Kimola</Company>
+    <PackageId>Kimola.Api</PackageId>
+    <Version>0.1.0</Version>
+    <Description>Kimola API - lightweight C# client for Presets, Queries, and Subscription endpoints.</Description>
+    <RepositoryUrl>https://github.com/Kimola/api</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,41 @@
+{
+  "name": "@kimola/api",
+  "version": "0.1.0",
+  "description": "Node.js (TypeScript) client SDK for the Kimola API",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup src/index.ts --dts --format esm,cjs --clean",
+    "dev": "tsx examples/quick.ts",
+    "dev:watch": "tsx --watch examples/quick.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "kimola",
+    "sdk",
+    "api",
+    "client",
+    "node",
+    "typescript"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^24.5.1",
+    "tsup": "^8.0.1",
+    "tsx": "^4.16.2",
+    "typescript": "^5.6.3"
+  }
+}

@@ -1,0 +1,1101 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Kimola.Api</name>
+    </assembly>
+    <members>
+        <member name="T:Kimola.Api.PresetsClient">
+            <summary>
+            Provides methods for interacting with the Kimola API's Presets endpoints.
+            </summary>
+            <remarks>
+            This client allows you to retrieve preset definitions, fetch their associated labels,
+            and run text predictions using a specific preset. It handles all HTTP communication,
+            serialization, and error handling.
+            </remarks>
+            <param name="http">
+            The <see cref="T:System.Net.Http.HttpClient"/> instance used to send HTTP requests to the Kimola API. 
+            This should be configured with the base URL and any required authentication headers.
+            </param>
+            <param name="json">
+            The <see cref="T:System.Text.Json.JsonSerializerOptions"/> used to control JSON serialization and deserialization 
+            for requests and responses.
+            </param>
+        </member>
+        <member name="M:Kimola.Api.PresetsClient.#ctor(System.Net.Http.HttpClient,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Provides methods for interacting with the Kimola API's Presets endpoints.
+            </summary>
+            <remarks>
+            This client allows you to retrieve preset definitions, fetch their associated labels,
+            and run text predictions using a specific preset. It handles all HTTP communication,
+            serialization, and error handling.
+            </remarks>
+            <param name="http">
+            The <see cref="T:System.Net.Http.HttpClient"/> instance used to send HTTP requests to the Kimola API. 
+            This should be configured with the base URL and any required authentication headers.
+            </param>
+            <param name="json">
+            The <see cref="T:System.Text.Json.JsonSerializerOptions"/> used to control JSON serialization and deserialization 
+            for requests and responses.
+            </param>
+        </member>
+        <member name="M:Kimola.Api.PresetsClient.GetAsync(System.Int32,System.Int32,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves a paginated list of presets from the Kimola API, optionally filtered by type and category.
+            </summary>
+            <param name="pageSize">
+            The number of presets to include in each page. Defaults to 10.
+            </param>
+            <param name="pageIndex">
+            The zero-based index of the page to retrieve. Defaults to 0.
+            </param>
+            <param name="type">
+            Optional filter to retrieve presets of a specific type.
+            </param>
+            <param name="category">
+            Optional filter to retrieve presets within a specific category.
+            </param>
+            <param name="ct">
+            A cancellation token that can be used to cancel the asynchronous operation.
+            </param>
+            <returns>
+            A task representing the asynchronous operation.  
+            The task result contains a <see cref="T:Kimola.Api.PagedPresetsResponse"/> with the retrieved presets and pagination metadata.
+            </returns>
+            <exception cref="T:Kimola.Api.KimolaHttpException">
+            Thrown when the API responds with a non-success status code.
+            </exception>
+        </member>
+        <member name="M:Kimola.Api.PresetsClient.GetByKeyAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves a specific preset from the Kimola API by its unique key.
+            </summary>
+            <param name="key">
+            The unique identifier of the preset to retrieve. Must be a valid, non-empty string with a minimum length of 8 characters.
+            </param>
+            <param name="ct">
+            A cancellation token that can be used to cancel the asynchronous operation.
+            </param>
+            <returns>
+            A task representing the asynchronous operation.  
+            The task result contains the <see cref="T:Kimola.Api.Preset"/> object corresponding to the specified key.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            Thrown when the provided <paramref name="key"/> is null, empty, or shorter than 8 characters.
+            </exception>
+            <exception cref="T:Kimola.Api.KimolaHttpException">
+            Thrown when the API responds with a non-success status code.
+            </exception>
+        </member>
+        <member name="M:Kimola.Api.PresetsClient.GetLabelsAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves the list of labels associated with a specific preset from the Kimola API.
+            </summary>
+            <param name="key">
+            The unique identifier of the preset whose labels are to be retrieved. Must be a valid, non-empty string with a minimum length of 8 characters.
+            </param>
+            <param name="ct">
+            A cancellation token that can be used to cancel the asynchronous operation.
+            </param>
+            <returns>
+            A task representing the asynchronous operation.  
+            The task result contains a read-only list of <see cref="T:Kimola.Api.PresetLabel"/> objects, or null if no labels are found.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            Thrown when the provided <paramref name="key"/> is null, empty, or shorter than 8 characters.
+            </exception>
+            <exception cref="T:Kimola.Api.KimolaHttpException">
+            Thrown when the API responds with a non-success status code.
+            </exception>
+        </member>
+        <member name="M:Kimola.Api.PresetsClient.PredictAsync(System.String,System.String,System.String,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Sends text to a specified preset for prediction and retrieves the analysis results.
+            </summary>
+            <param name="key">
+            The unique identifier of the preset to use for prediction. Must be a valid, non-empty string with a minimum length of 8 characters.
+            </param>
+            <param name="text">
+            The input text to analyze. This field is required and cannot be null or empty.
+            </param>
+            <param name="language">
+            Optional ISO language code (e.g., "en", "tr").  
+            When provided, the preset will process the text using the specified language.
+            </param>
+            <param name="aspectBased">
+            A flag indicating whether aspect-based analysis should be performed.  
+            Set to <c>true</c> for detailed aspect-level predictions; defaults to <c>false</c>.
+            </param>
+            <param name="ct">
+            A cancellation token that can be used to cancel the asynchronous operation.
+            </param>
+            <returns>
+            A task representing the asynchronous operation.  
+            The task result contains a read-only list of <see cref="T:Kimola.Api.PredictionResult"/> objects representing the prediction outcomes.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            Thrown when the <paramref name="key"/> is invalid or when the <paramref name="text"/> parameter is null or empty.
+            </exception>
+            <exception cref="T:Kimola.Api.KimolaHttpException">
+            Thrown when the API responds with a non-success status code.
+            </exception>
+        </member>
+        <member name="M:Kimola.Api.PresetsClient.Send``1(System.Net.Http.HttpMethod,System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
+            <summary>
+            Sends an HTTP request to the Kimola API and deserializes the response content to the specified type.
+            </summary>
+            <typeparam name="T">
+            The type to which the response body will be deserialized.
+            </typeparam>
+            <param name="method">
+            The HTTP method to use for the request, such as GET, POST, PUT, or DELETE.
+            </param>
+            <param name="path">
+            The relative URL path for the API endpoint, including query parameters if applicable.
+            </param>
+            <param name="content">
+            The optional HTTP content to include in the request body, such as JSON payload for POST or PUT requests.
+            Pass <c>null</c> for requests without a body.
+            </param>
+            <param name="ct">
+            A cancellation token that can be used to cancel the request.
+            </param>
+            <returns>
+            A task representing the asynchronous operation.  
+            The task result contains the deserialized response of type <typeparamref name="T"/>.
+            </returns>
+            <exception cref="T:Kimola.Api.KimolaHttpException">
+            Thrown when the API returns a non-success HTTP status code, providing details of the error response.
+            </exception>
+            <exception cref="T:System.InvalidOperationException">
+            Thrown when the response body is empty or cannot be deserialized into the specified type <typeparamref name="T"/>.
+            </exception>
+        </member>
+        <member name="M:Kimola.Api.PresetsClient.EnsureKey(System.String)">
+            <summary>
+            Validates that the provided preset key is not null, empty, or shorter than the required length.
+            </summary>
+            <param name="key">
+            The preset key to validate. Must be a non-empty string with a minimum length of 8 characters.
+            </param>
+            <exception cref="T:System.ArgumentException">
+            Thrown when the <paramref name="key"/> is null, empty, or shorter than 8 characters.
+            </exception>
+        </member>
+        <member name="T:Kimola.Api.QueriesClient">
+            <summary>
+            Initializes a new instance of the <see cref="T:Kimola.Api.QueriesClient"/> class, which provides methods to interact 
+            with the Kimola API for retrieving query data and statistics.
+            </summary>
+            <param name="http">
+            The <see cref="T:System.Net.Http.HttpClient"/> instance used to send HTTP requests to the Kimola API. 
+            This should be configured with the base URL and any required authentication headers.
+            </param>
+            <param name="json">
+            The <see cref="T:System.Text.Json.JsonSerializerOptions"/> used to control JSON serialization and deserialization 
+            behavior when processing API responses.
+            </param>
+        </member>
+        <member name="M:Kimola.Api.QueriesClient.#ctor(System.Net.Http.HttpClient,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Kimola.Api.QueriesClient"/> class, which provides methods to interact 
+            with the Kimola API for retrieving query data and statistics.
+            </summary>
+            <param name="http">
+            The <see cref="T:System.Net.Http.HttpClient"/> instance used to send HTTP requests to the Kimola API. 
+            This should be configured with the base URL and any required authentication headers.
+            </param>
+            <param name="json">
+            The <see cref="T:System.Text.Json.JsonSerializerOptions"/> used to control JSON serialization and deserialization 
+            behavior when processing API responses.
+            </param>
+        </member>
+        <member name="M:Kimola.Api.QueriesClient.GetAsync(System.Int32,System.Int32,System.Nullable{System.DateTimeOffset},System.Nullable{System.DateTimeOffset},System.Threading.CancellationToken)">
+            <summary>
+            Retrieves a paginated list of query items from the Kimola API, optionally filtered by date range.
+            </summary>
+            <param name="pageIndex">
+            The zero-based index of the page to retrieve. Defaults to 0.
+            </param>
+            <param name="pageSize">
+            The number of items to include in each page. Defaults to 10.
+            </param>
+            <param name="startDateUtc">
+            Optional start date (UTC). When provided, only queries created on or after this date will be included.
+            </param>
+            <param name="endDateUtc">
+            Optional end date (UTC). When provided, only queries created on or before this date will be included.
+            </param>
+            <param name="ct">
+            A cancellation token that can be used to cancel the asynchronous operation.
+            </param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains a read-only list of <see cref="T:Kimola.Api.QueryItem"/> objects.
+            </returns>
+        </member>
+        <member name="M:Kimola.Api.QueriesClient.GetStatisticsAsync(System.Nullable{System.DateTimeOffset},System.Nullable{System.DateTimeOffset},System.Threading.CancellationToken)">
+            <summary>
+            Retrieves aggregated query statistics from the Kimola API, optionally filtered by a date range.
+            </summary>
+            <param name="startDateUtc">
+            Optional start date (UTC). When provided, only statistics for queries created on or after this date will be included.
+            </param>
+            <param name="endDateUtc">
+            Optional end date (UTC). When provided, only statistics for queries created on or before this date will be included.
+            </param>
+            <param name="ct">
+            A cancellation token that can be used to cancel the asynchronous operation.
+            </param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains a read-only list of <see cref="T:Kimola.Api.QueryStat"/> objects
+            representing aggregated statistics about the queries.
+            </returns>
+        </member>
+        <member name="M:Kimola.Api.QueriesClient.Send``1(System.Net.Http.HttpMethod,System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
+            <summary>
+            Sends an HTTP request to the Kimola API and deserializes the response body to the specified type.
+            </summary>
+            <typeparam name="T">
+            The type to which the JSON response body will be deserialized.
+            </typeparam>
+            <param name="method">
+            The HTTP method to use for the request (e.g., GET, POST, PUT, DELETE).
+            </param>
+            <param name="path">
+            The relative URL path for the request, including any query parameters.
+            </param>
+            <param name="content">
+            The HTTP content to send in the request body. Can be null for requests like GET or DELETE.
+            </param>
+            <param name="ct">
+            A cancellation token that can be used to cancel the asynchronous operation.
+            </param>
+            <returns>
+            A task representing the asynchronous operation.  
+            The task result contains the deserialized response object of type <typeparamref name="T"/>.
+            </returns>
+            <exception cref="T:Kimola.Api.KimolaHttpException">
+            Thrown when the API returns a non-success status code, with details about the failure.
+            </exception>
+            <exception cref="T:System.InvalidOperationException">
+            Thrown when the response body is empty or cannot be deserialized to the specified type.
+            </exception>
+        </member>
+        <member name="T:Kimola.Api.SubscriptionClient">
+            <summary>
+            Provides methods for interacting with the subscription-related endpoints of the Kimola API.
+            </summary>
+            <remarks>
+            This client allows you to retrieve subscription information such as resource usage and quotas.  
+            It manages the HTTP communication, serialization, and error handling internally.
+            </remarks>
+            <param name="http">
+            The <see cref="T:System.Net.Http.HttpClient"/> instance used to send HTTP requests to the Kimola API.
+            It should be configured with the base address and any necessary authentication headers.
+            </param>
+            <param name="json">
+            The <see cref="T:System.Text.Json.JsonSerializerOptions"/> used to configure JSON serialization and deserialization
+            when processing API requests and responses.
+            </param>
+        </member>
+        <member name="M:Kimola.Api.SubscriptionClient.#ctor(System.Net.Http.HttpClient,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Provides methods for interacting with the subscription-related endpoints of the Kimola API.
+            </summary>
+            <remarks>
+            This client allows you to retrieve subscription information such as resource usage and quotas.  
+            It manages the HTTP communication, serialization, and error handling internally.
+            </remarks>
+            <param name="http">
+            The <see cref="T:System.Net.Http.HttpClient"/> instance used to send HTTP requests to the Kimola API.
+            It should be configured with the base address and any necessary authentication headers.
+            </param>
+            <param name="json">
+            The <see cref="T:System.Text.Json.JsonSerializerOptions"/> used to configure JSON serialization and deserialization
+            when processing API requests and responses.
+            </param>
+        </member>
+        <member name="M:Kimola.Api.SubscriptionClient.GetUsageAsync(System.Nullable{System.DateTimeOffset},System.Threading.CancellationToken)">
+            <summary>
+            Retrieves the subscription usage details for the current Kimola account.
+            </summary>
+            <param name="dateUtc">
+            Optional UTC date to retrieve the subscription usage for a specific day.  
+            If not provided, the current date will be used.
+            </param>
+            <param name="ct">
+            A cancellation token that can be used to cancel the asynchronous operation.
+            </param>
+            <returns>
+            A task representing the asynchronous operation.  
+            The task result contains a <see cref="T:Kimola.Api.SubscriptionUsage"/> object with information about consumed resources and quotas.
+            </returns>
+            <exception cref="T:Kimola.Api.KimolaHttpException">
+            Thrown when the API returns a non-success HTTP status code, providing details of the error response.
+            </exception>
+            <exception cref="T:System.InvalidOperationException">
+            Thrown when the response body is empty or cannot be deserialized into a <see cref="T:Kimola.Api.SubscriptionUsage"/> object.
+            </exception>
+        </member>
+        <member name="M:Kimola.Api.SubscriptionClient.Send``1(System.Net.Http.HttpMethod,System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
+            <summary>
+            Sends an HTTP request to the Kimola API and deserializes the response content to the specified type.
+            </summary>
+            <typeparam name="T">
+            The type to which the JSON response body will be deserialized.
+            </typeparam>
+            <param name="method">
+            The HTTP method to use for the request (e.g., GET, POST, PUT, DELETE).
+            </param>
+            <param name="path">
+            The relative URL path of the API endpoint, including any query string parameters.
+            </param>
+            <param name="content">
+            The optional HTTP content to include in the request body. Pass <c>null</c> for requests without a body, such as GET or DELETE.
+            </param>
+            <param name="ct">
+            A cancellation token that can be used to cancel the asynchronous operation.
+            </param>
+            <returns>
+            A task representing the asynchronous operation.  
+            The task result contains the deserialized response of type <typeparamref name="T"/>.
+            </returns>
+            <exception cref="T:Kimola.Api.KimolaHttpException">
+            Thrown when the API returns a non-success HTTP status code, containing details of the error response.
+            </exception>
+            <exception cref="T:System.InvalidOperationException">
+            Thrown when the response body is empty or cannot be deserialized into the specified type <typeparamref name="T"/>.
+            </exception>
+        </member>
+        <member name="T:Kimola.Api.KimolaHttpException">
+            <summary>
+            Represents errors returned from the Kimola API when an HTTP request fails.
+            </summary>
+            <remarks>
+            This exception includes the HTTP status code and the raw response body for easier debugging.  
+            It is thrown whenever the API returns a non-success status code (4xx or 5xx).
+            </remarks>
+        </member>
+        <member name="P:Kimola.Api.KimolaHttpException.StatusCode">
+            <summary>
+            The HTTP status code returned by the API.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.KimolaHttpException.ResponseBody">
+            <summary>
+            The raw body of the HTTP response, if available.
+            </summary>
+        </member>
+        <member name="M:Kimola.Api.KimolaHttpException.#ctor(System.Net.HttpStatusCode,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Kimola.Api.KimolaHttpException"/> class.
+            </summary>
+            <param name="statusCode">The HTTP status code returned by the API.</param>
+            <param name="responseBody">The raw HTTP response body returned by the API, if available.</param>
+            <param name="message">A user-friendly error message describing the issue.</param>
+        </member>
+        <member name="M:Kimola.Api.KimolaHttpException.FromResponse(System.Net.HttpStatusCode,System.String)">
+            <summary>
+            Creates a new <see cref="T:Kimola.Api.KimolaHttpException"/> based on the provided status code and response body.
+            </summary>
+            <param name="statusCode">The HTTP status code returned by the API.</param>
+            <param name="body">The raw response body returned by the API.</param>
+            <returns>A <see cref="T:Kimola.Api.KimolaHttpException"/> with a descriptive error message.</returns>
+            <remarks>
+            Custom messages are provided for common API errors:
+            <list type="bullet">
+            <item><description>400 – Bad Request: Missing or invalid <c>Authorization</c> header.</description></item>
+            <item><description>401 – Unauthorized: Invalid API key.</description></item>
+            <item><description>403 – Forbidden: API key does not have permission to access this resource.</description></item>
+            </list>
+            For all other status codes, a generic message will be generated.
+            </remarks>
+        </member>
+        <member name="T:Kimola.Api.HttpReadHelpers">
+            <summary>
+            Helper methods for safely reading HTTP responses.
+            </summary>
+        </member>
+        <member name="M:Kimola.Api.HttpReadHelpers.SafeReadAsync(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            Safely reads the response body from an <see cref="T:System.Net.Http.HttpResponseMessage"/> as a string.  
+            If reading fails, returns <c>null</c> instead of throwing an exception.
+            </summary>
+            <param name="res">The HTTP response message to read.</param>
+            <returns>The response body as a string, or <c>null</c> if reading fails.</returns>
+        </member>
+        <member name="T:Kimola.Api.KimolaClientOptions">
+            <summary>
+            Provides configuration options for initializing a <see cref="T:Kimola.Api.KimolaClient"/> instance.
+            </summary>
+            <remarks>
+            This class contains settings such as the API key, base URL, and a custom <see cref="P:Kimola.Api.KimolaClientOptions.HttpClient"/>.
+            </remarks>
+        </member>
+        <member name="P:Kimola.Api.KimolaClientOptions.ApiKey">
+            <summary>
+            The API key used to authenticate requests to the Kimola API.
+            </summary>
+            <remarks>
+            This property is required. Requests will fail if a valid API key is not provided.
+            </remarks>
+        </member>
+        <member name="P:Kimola.Api.KimolaClientOptions.BaseUrl">
+            <summary>
+            The base URL of the Kimola API. Defaults to <c>https://api.kimola.com/v1</c>.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.KimolaClientOptions.HttpClient">
+            <summary>
+            An optional custom <see cref="P:Kimola.Api.KimolaClientOptions.HttpClient"/> instance to use for sending requests.
+            </summary>
+            <remarks>
+            If this is not provided, a new <see cref="P:Kimola.Api.KimolaClientOptions.HttpClient"/> will be created and managed internally.
+            </remarks>
+        </member>
+        <member name="T:Kimola.Api.KimolaClient">
+            <summary>
+            Entry point for interacting with the Kimola API using a shared <see cref="T:System.Net.Http.HttpClient"/>.
+            </summary>
+            <remarks>
+            This client configures Bearer authentication (<c>Authorization: Bearer &lt;apiKey&gt;</c>) and JSON
+            serialization, and exposes typed resource clients:
+            <list type="bullet">
+            <item>
+            <description><see cref="P:Kimola.Api.KimolaClient.Presets"/> — catalog of pretrained models (list, get by key, labels, predictions).</description>
+            </item>
+            <item>
+            <description><see cref="P:Kimola.Api.KimolaClient.Queries"/> — query-consumption history and aggregated statistics (UTC date range, pagination).</description>
+            </item>
+            <item>
+            <description><see cref="P:Kimola.Api.KimolaClient.Subscription"/> — current or historical subscription usage (links, models, queries, keywords).</description>
+            </item>
+            </list>
+            Dates are treated as UTC (ISO-8601 <c>...Z</c>). Pagination defaults to <c>pageIndex=0</c>, <c>pageSize=10</c>
+            (capped at 10) where applicable.
+            </remarks>
+        </member>
+        <member name="F:Kimola.Api.KimolaClient.Json">
+            <summary>
+            The JSON serializer options used across resource clients (web defaults, case-insensitive, ignore nulls).
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.KimolaClient.Presets">
+            <summary>
+            Operations for Kimola Presets (pretrained AI models): list, get by key, fetch labels,
+            and run predictions (standard or aspect-based).
+            </summary>
+            <remarks>
+            For predictions, the API accepts a raw JSON string as the request body (<c>"text"</c> content),
+            optional <c>language</c> (ISO-639-1), and <c>aspectBased</c> mode. Aspect-based predictions return
+            per-aspect sentiments; standard predictions return a dominant label with probability.
+            </remarks>
+        </member>
+        <member name="P:Kimola.Api.KimolaClient.Queries">
+            <summary>
+            Operations for inspecting Query consumption: paginated activity and aggregated statistics by category
+            (e.g., Classification, Tracking, Scraping). Supports optional UTC date filtering.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.KimolaClient.Subscription">
+            <summary>
+            Operations for retrieving subscription usage (counts, limits, remaining, percentages) for resources such as
+            Links, Models, Queries, and Keywords. Supports an optional UTC <c>date</c> to access past periods.
+            </summary>
+        </member>
+        <member name="M:Kimola.Api.KimolaClient.#ctor(Kimola.Api.KimolaClientOptions)">
+            <summary>
+            Initializes a new <see cref="T:Kimola.Api.KimolaClient"/> with the provided options (API key, base URL, optional <see cref="T:System.Net.Http.HttpClient"/>).
+            </summary>
+            <param name="options">
+            Configuration for API access. <see cref="P:Kimola.Api.KimolaClientOptions.ApiKey"/> is required; <see cref="P:Kimola.Api.KimolaClientOptions.BaseUrl"/>
+            defaults to <c>https://api.kimola.com/v1</c>. If <see cref="P:Kimola.Api.KimolaClientOptions.HttpClient"/> is omitted,
+            the client manages its own <see cref="T:System.Net.Http.HttpClient"/> lifetime.
+            </param>
+            <exception cref="T:System.ArgumentException">
+            Thrown when <see cref="P:Kimola.Api.KimolaClientOptions.ApiKey"/> is null, empty, or whitespace.
+            </exception>
+        </member>
+        <member name="M:Kimola.Api.KimolaClient.Dispose">
+            <summary>
+            Disposes the underlying <see cref="T:System.Net.Http.HttpClient"/> instance if it is owned by this class.
+            </summary>
+        </member>
+        <member name="M:Kimola.Api.KimolaClient.AppendSlash(System.String)">
+            <summary>
+            Ensures the configured base URL ends with a trailing slash to form valid relative request URIs.
+            </summary>
+            <param name="s">The base URL.</param>
+            <returns>The base URL with a trailing slash.</returns>
+        </member>
+        <member name="T:Kimola.Api.PredictionResult">
+             <summary>
+             Represents the result of a prediction returned by the Kimola API.
+             </summary>
+             <remarks>
+             For **standard predictions** (<c>aspectBased=false</c>):
+             - The <see cref="P:Kimola.Api.PredictionResult.Probability"/> property will be populated with a confidence score between 0.0 and 1.0.
+             - The <see cref="P:Kimola.Api.PredictionResult.Sentiment"/> property will be <c>null</c>.
+            
+             For **aspect-based predictions** (<c>aspectBased=true</c>):
+             - The <see cref="P:Kimola.Api.PredictionResult.Sentiment"/> property will indicate the detected sentiment, such as "Positive", "Negative", or "Neutral".
+             - The <see cref="P:Kimola.Api.PredictionResult.Probability"/> property will be <c>null</c>.
+             </remarks>
+             <param name="Name">
+             The name or label associated with the prediction, such as a category or aspect.
+             </param>
+             <param name="Probability">
+             The confidence score for standard predictions.  
+             Only populated when <c>aspectBased=false</c>; otherwise, this is <c>null</c>.
+             </param>
+             <param name="Sentiment">
+             The sentiment result for aspect-based predictions.  
+             Only populated when <c>aspectBased=true</c>; otherwise, this is <c>null</c>.
+             </param>
+        </member>
+        <member name="M:Kimola.Api.PredictionResult.#ctor(System.String,System.Nullable{System.Double},System.String)">
+             <summary>
+             Represents the result of a prediction returned by the Kimola API.
+             </summary>
+             <remarks>
+             For **standard predictions** (<c>aspectBased=false</c>):
+             - The <see cref="P:Kimola.Api.PredictionResult.Probability"/> property will be populated with a confidence score between 0.0 and 1.0.
+             - The <see cref="P:Kimola.Api.PredictionResult.Sentiment"/> property will be <c>null</c>.
+            
+             For **aspect-based predictions** (<c>aspectBased=true</c>):
+             - The <see cref="P:Kimola.Api.PredictionResult.Sentiment"/> property will indicate the detected sentiment, such as "Positive", "Negative", or "Neutral".
+             - The <see cref="P:Kimola.Api.PredictionResult.Probability"/> property will be <c>null</c>.
+             </remarks>
+             <param name="Name">
+             The name or label associated with the prediction, such as a category or aspect.
+             </param>
+             <param name="Probability">
+             The confidence score for standard predictions.  
+             Only populated when <c>aspectBased=false</c>; otherwise, this is <c>null</c>.
+             </param>
+             <param name="Sentiment">
+             The sentiment result for aspect-based predictions.  
+             Only populated when <c>aspectBased=true</c>; otherwise, this is <c>null</c>.
+             </param>
+        </member>
+        <member name="P:Kimola.Api.PredictionResult.Name">
+            <summary>
+            The name or label associated with the prediction, such as a category or aspect.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.PredictionResult.Probability">
+            <summary>
+            The confidence score for standard predictions.  
+            Only populated when <c>aspectBased=false</c>; otherwise, this is <c>null</c>.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.PredictionResult.Sentiment">
+            <summary>
+            The sentiment result for aspect-based predictions.  
+            Only populated when <c>aspectBased=true</c>; otherwise, this is <c>null</c>.
+            </summary>
+        </member>
+        <member name="T:Kimola.Api.Preset">
+            <summary>
+            Represents a **preset definition** in the Kimola API.
+            </summary>
+            <remarks>
+            A preset is a ready-to-use AI model hosted by Kimola that performs tasks such as
+            text classification or entity extraction.  
+            You can retrieve a list of presets using <c>GET /presets</c> and run predictions with <c>POST /presets/{key}/predictions</c>.
+            </remarks>
+            <param name="Key">
+            The unique identifier of the preset (24-character string).  
+            This is required when requesting labels or predictions.
+            </param>
+            <param name="Slug">
+            A URL-friendly string representing the preset name or category.
+            </param>
+            <param name="Name">
+            The display name of the preset, used in UI and dashboards.
+            </param>
+        </member>
+        <member name="M:Kimola.Api.Preset.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Represents a **preset definition** in the Kimola API.
+            </summary>
+            <remarks>
+            A preset is a ready-to-use AI model hosted by Kimola that performs tasks such as
+            text classification or entity extraction.  
+            You can retrieve a list of presets using <c>GET /presets</c> and run predictions with <c>POST /presets/{key}/predictions</c>.
+            </remarks>
+            <param name="Key">
+            The unique identifier of the preset (24-character string).  
+            This is required when requesting labels or predictions.
+            </param>
+            <param name="Slug">
+            A URL-friendly string representing the preset name or category.
+            </param>
+            <param name="Name">
+            The display name of the preset, used in UI and dashboards.
+            </param>
+        </member>
+        <member name="P:Kimola.Api.Preset.Key">
+            <summary>
+            The unique identifier of the preset (24-character string).  
+            This is required when requesting labels or predictions.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.Preset.Slug">
+            <summary>
+            A URL-friendly string representing the preset name or category.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.Preset.Name">
+            <summary>
+            The display name of the preset, used in UI and dashboards.
+            </summary>
+        </member>
+        <member name="T:Kimola.Api.PagedPresetsResponse">
+            <summary>
+            Represents a paginated API response containing a collection of presets.
+            </summary>
+            <remarks>
+            Returned by <c>GET /presets</c> when listing available pretrained models.  
+            Includes the total count for pagination and the current page of <see cref="T:Kimola.Api.Preset"/> results.
+            </remarks>
+            <param name="Total">
+            The total number of presets available that match the current query filters.
+            </param>
+            <param name="Items">
+            A read-only list of <see cref="T:Kimola.Api.Preset"/> objects representing the current page of results.
+            </param>
+        </member>
+        <member name="M:Kimola.Api.PagedPresetsResponse.#ctor(System.Int32,System.Collections.Generic.IReadOnlyList{Kimola.Api.Preset})">
+            <summary>
+            Represents a paginated API response containing a collection of presets.
+            </summary>
+            <remarks>
+            Returned by <c>GET /presets</c> when listing available pretrained models.  
+            Includes the total count for pagination and the current page of <see cref="T:Kimola.Api.Preset"/> results.
+            </remarks>
+            <param name="Total">
+            The total number of presets available that match the current query filters.
+            </param>
+            <param name="Items">
+            A read-only list of <see cref="T:Kimola.Api.Preset"/> objects representing the current page of results.
+            </param>
+        </member>
+        <member name="P:Kimola.Api.PagedPresetsResponse.Total">
+            <summary>
+            The total number of presets available that match the current query filters.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.PagedPresetsResponse.Items">
+            <summary>
+            A read-only list of <see cref="T:Kimola.Api.Preset"/> objects representing the current page of results.
+            </summary>
+        </member>
+        <member name="T:Kimola.Api.PresetLabel">
+            <summary>
+            Represents a label associated with a specific preset in the Kimola API.
+            </summary>
+            <remarks>
+            Labels define the possible outputs for a classification model.  
+            Use <c>GET /presets/{key}/labels</c> to retrieve these for a given preset.
+            </remarks>
+            <param name="Name">
+            The label name, such as <c>Positive</c>, <c>Negative</c>, or another category.
+            </param>
+            <param name="Description">
+            An optional description providing more context about the label, such as its use case or meaning.
+            </param>
+        </member>
+        <member name="M:Kimola.Api.PresetLabel.#ctor(System.String,System.String)">
+            <summary>
+            Represents a label associated with a specific preset in the Kimola API.
+            </summary>
+            <remarks>
+            Labels define the possible outputs for a classification model.  
+            Use <c>GET /presets/{key}/labels</c> to retrieve these for a given preset.
+            </remarks>
+            <param name="Name">
+            The label name, such as <c>Positive</c>, <c>Negative</c>, or another category.
+            </param>
+            <param name="Description">
+            An optional description providing more context about the label, such as its use case or meaning.
+            </param>
+        </member>
+        <member name="P:Kimola.Api.PresetLabel.Name">
+            <summary>
+            The label name, such as <c>Positive</c>, <c>Negative</c>, or another category.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.PresetLabel.Description">
+            <summary>
+            An optional description providing more context about the label, such as its use case or meaning.
+            </summary>
+        </member>
+        <member name="T:Kimola.Api.QueryReport">
+            <summary>
+            Represents the report details included in a query entry.
+            </summary>
+            <remarks>
+            Each query is linked to a report that triggered the consumption.  
+            This contains identifying information about the report, which is useful for tracking where the queries originated.
+            </remarks>
+            <param name="Code">
+            The unique identifier (GUID) of the report.
+            </param>
+            <param name="Name">
+            The internal name of the report.
+            </param>
+            <param name="Title">
+            The user-friendly title of the report displayed in the dashboard or UI.
+            </param>
+        </member>
+        <member name="M:Kimola.Api.QueryReport.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Represents the report details included in a query entry.
+            </summary>
+            <remarks>
+            Each query is linked to a report that triggered the consumption.  
+            This contains identifying information about the report, which is useful for tracking where the queries originated.
+            </remarks>
+            <param name="Code">
+            The unique identifier (GUID) of the report.
+            </param>
+            <param name="Name">
+            The internal name of the report.
+            </param>
+            <param name="Title">
+            The user-friendly title of the report displayed in the dashboard or UI.
+            </param>
+        </member>
+        <member name="P:Kimola.Api.QueryReport.Code">
+            <summary>
+            The unique identifier (GUID) of the report.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.QueryReport.Name">
+            <summary>
+            The internal name of the report.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.QueryReport.Title">
+            <summary>
+            The user-friendly title of the report displayed in the dashboard or UI.
+            </summary>
+        </member>
+        <member name="T:Kimola.Api.QueryItemRecord">
+            <summary>
+            Represents the specific item within a query transaction.
+            </summary>
+            <remarks>
+            A query item describes what entity was involved in the query, such as a preset or another resource.  
+            This helps categorize and understand what type of action consumed queries.
+            </remarks>
+            <param name="Code">
+            The unique identifier (GUID) of the item.
+            </param>
+            <param name="Name">
+            The display name of the item.
+            </param>
+            <param name="Type">
+            The type of the query item (e.g., <c>Classifier</c>, <c>Scraper</c>, <c>Tracker</c>).
+            </param>
+        </member>
+        <member name="M:Kimola.Api.QueryItemRecord.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Represents the specific item within a query transaction.
+            </summary>
+            <remarks>
+            A query item describes what entity was involved in the query, such as a preset or another resource.  
+            This helps categorize and understand what type of action consumed queries.
+            </remarks>
+            <param name="Code">
+            The unique identifier (GUID) of the item.
+            </param>
+            <param name="Name">
+            The display name of the item.
+            </param>
+            <param name="Type">
+            The type of the query item (e.g., <c>Classifier</c>, <c>Scraper</c>, <c>Tracker</c>).
+            </param>
+        </member>
+        <member name="P:Kimola.Api.QueryItemRecord.Code">
+            <summary>
+            The unique identifier (GUID) of the item.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.QueryItemRecord.Name">
+            <summary>
+            The display name of the item.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.QueryItemRecord.Type">
+            <summary>
+            The type of the query item (e.g., <c>Classifier</c>, <c>Scraper</c>, <c>Tracker</c>).
+            </summary>
+        </member>
+        <member name="T:Kimola.Api.QueryItem">
+            <summary>
+            Represents a single query consumption event.
+            </summary>
+            <remarks>
+            Each entry shows the report and item involved, along with metadata such as the amount consumed and the timestamp.  
+            Use this model to inspect consumption history when calling <c>GET /queries</c>.
+            </remarks>
+            <param name="Report">
+            The report associated with this query event.
+            </param>
+            <param name="Item">
+            The specific query item linked to this event.
+            </param>
+            <param name="Type">
+            The classification of the query event, such as <c>Classification</c>, <c>Tracking</c>, or <c>Scraping</c>.
+            </param>
+            <param name="Amount">
+            The number of queries consumed by this event.
+            </param>
+            <param name="Date">
+            The timestamp (UTC) indicating when the query was processed.  
+            Serialized in ISO 8601 format with a <c>Z</c> suffix.
+            </param>
+        </member>
+        <member name="M:Kimola.Api.QueryItem.#ctor(Kimola.Api.QueryReport,Kimola.Api.QueryItemRecord,System.String,System.Int32,System.DateTimeOffset)">
+            <summary>
+            Represents a single query consumption event.
+            </summary>
+            <remarks>
+            Each entry shows the report and item involved, along with metadata such as the amount consumed and the timestamp.  
+            Use this model to inspect consumption history when calling <c>GET /queries</c>.
+            </remarks>
+            <param name="Report">
+            The report associated with this query event.
+            </param>
+            <param name="Item">
+            The specific query item linked to this event.
+            </param>
+            <param name="Type">
+            The classification of the query event, such as <c>Classification</c>, <c>Tracking</c>, or <c>Scraping</c>.
+            </param>
+            <param name="Amount">
+            The number of queries consumed by this event.
+            </param>
+            <param name="Date">
+            The timestamp (UTC) indicating when the query was processed.  
+            Serialized in ISO 8601 format with a <c>Z</c> suffix.
+            </param>
+        </member>
+        <member name="P:Kimola.Api.QueryItem.Report">
+            <summary>
+            The report associated with this query event.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.QueryItem.Item">
+            <summary>
+            The specific query item linked to this event.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.QueryItem.Type">
+            <summary>
+            The classification of the query event, such as <c>Classification</c>, <c>Tracking</c>, or <c>Scraping</c>.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.QueryItem.Amount">
+            <summary>
+            The number of queries consumed by this event.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.QueryItem.Date">
+            <summary>
+            The timestamp (UTC) indicating when the query was processed.  
+            Serialized in ISO 8601 format with a <c>Z</c> suffix.
+            </summary>
+        </member>
+        <member name="T:Kimola.Api.QueryStat">
+            <summary>
+            Represents aggregated query usage statistics for a given category.
+            </summary>
+            <remarks>
+            This is returned by the <c>GET /queries/statistics</c> endpoint to show grouped consumption by category.
+            </remarks>
+            <param name="Name">
+            The category name, such as <c>Classification</c>, <c>Tracking</c>, or <c>Scraping</c>.
+            </param>
+            <param name="Count">
+            The total number of queries consumed for this category.
+            </param>
+            <param name="Ratio">
+            The ratio of this category relative to total consumption (e.g., 0.73 for 73%).
+            </param>
+            <param name="Percentage">
+            The ratio expressed as a whole number percentage (e.g., 73).
+            </param>
+        </member>
+        <member name="M:Kimola.Api.QueryStat.#ctor(System.String,System.Int32,System.Double,System.Int32)">
+            <summary>
+            Represents aggregated query usage statistics for a given category.
+            </summary>
+            <remarks>
+            This is returned by the <c>GET /queries/statistics</c> endpoint to show grouped consumption by category.
+            </remarks>
+            <param name="Name">
+            The category name, such as <c>Classification</c>, <c>Tracking</c>, or <c>Scraping</c>.
+            </param>
+            <param name="Count">
+            The total number of queries consumed for this category.
+            </param>
+            <param name="Ratio">
+            The ratio of this category relative to total consumption (e.g., 0.73 for 73%).
+            </param>
+            <param name="Percentage">
+            The ratio expressed as a whole number percentage (e.g., 73).
+            </param>
+        </member>
+        <member name="P:Kimola.Api.QueryStat.Name">
+            <summary>
+            The category name, such as <c>Classification</c>, <c>Tracking</c>, or <c>Scraping</c>.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.QueryStat.Count">
+            <summary>
+            The total number of queries consumed for this category.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.QueryStat.Ratio">
+            <summary>
+            The ratio of this category relative to total consumption (e.g., 0.73 for 73%).
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.QueryStat.Percentage">
+            <summary>
+            The ratio expressed as a whole number percentage (e.g., 73).
+            </summary>
+        </member>
+        <member name="T:Kimola.Api.SubscriptionUsageBucket">
+            <summary>
+            Represents a single usage bucket within a subscription plan. 
+            Each bucket corresponds to a specific resource type tracked by Kimola, such as links, models, queries, or keywords.
+            </summary>
+            <param name="Count">
+            The number of units that have been consumed for this resource type in the current or specified billing period.
+            </param>
+            <param name="Limit">
+            The maximum number of units allowed for this resource type under the current subscription plan.
+            </param>
+            <param name="Percentage">
+            The percentage of the limit that has been used, ranging from 0.0 to 100.0.
+            </param>
+            <param name="Available">
+            The number of remaining units before this resource type reaches its limit.
+            </param>
+        </member>
+        <member name="M:Kimola.Api.SubscriptionUsageBucket.#ctor(System.Int32,System.Int32,System.Double,System.Int32)">
+            <summary>
+            Represents a single usage bucket within a subscription plan. 
+            Each bucket corresponds to a specific resource type tracked by Kimola, such as links, models, queries, or keywords.
+            </summary>
+            <param name="Count">
+            The number of units that have been consumed for this resource type in the current or specified billing period.
+            </param>
+            <param name="Limit">
+            The maximum number of units allowed for this resource type under the current subscription plan.
+            </param>
+            <param name="Percentage">
+            The percentage of the limit that has been used, ranging from 0.0 to 100.0.
+            </param>
+            <param name="Available">
+            The number of remaining units before this resource type reaches its limit.
+            </param>
+        </member>
+        <member name="P:Kimola.Api.SubscriptionUsageBucket.Count">
+            <summary>
+            The number of units that have been consumed for this resource type in the current or specified billing period.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.SubscriptionUsageBucket.Limit">
+            <summary>
+            The maximum number of units allowed for this resource type under the current subscription plan.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.SubscriptionUsageBucket.Percentage">
+            <summary>
+            The percentage of the limit that has been used, ranging from 0.0 to 100.0.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.SubscriptionUsageBucket.Available">
+            <summary>
+            The number of remaining units before this resource type reaches its limit.
+            </summary>
+        </member>
+        <member name="T:Kimola.Api.SubscriptionUsage">
+            <summary>
+            Represents the overall subscription usage for the current or a past billing period. 
+            Provides usage details for each tracked resource type: Links, Models, Queries, and Keywords.
+            </summary>
+            <param name="Link">
+            Usage information for link-based resources.  
+            These represent API actions related to link tracking within the Kimola platform.
+            </param>
+            <param name="Model">
+            Usage information for model-based resources.  
+            These represent API actions related to machine learning models, such as running predictions or classifications.
+            </param>
+            <param name="Query">
+            Usage information for query-based resources.  
+            This includes all transactions like classification, scraping, and tracking customer feedback.  
+            Serialized as <c>"query"</c> in the API response.
+            </param>
+            <param name="Keyword">
+            Usage information for keyword-based resources.  
+            These represent resources related to keyword tracking or analysis within the Kimola platform.
+            </param>
+        </member>
+        <member name="M:Kimola.Api.SubscriptionUsage.#ctor(Kimola.Api.SubscriptionUsageBucket,Kimola.Api.SubscriptionUsageBucket,Kimola.Api.SubscriptionUsageBucket,Kimola.Api.SubscriptionUsageBucket)">
+            <summary>
+            Represents the overall subscription usage for the current or a past billing period. 
+            Provides usage details for each tracked resource type: Links, Models, Queries, and Keywords.
+            </summary>
+            <param name="Link">
+            Usage information for link-based resources.  
+            These represent API actions related to link tracking within the Kimola platform.
+            </param>
+            <param name="Model">
+            Usage information for model-based resources.  
+            These represent API actions related to machine learning models, such as running predictions or classifications.
+            </param>
+            <param name="Query">
+            Usage information for query-based resources.  
+            This includes all transactions like classification, scraping, and tracking customer feedback.  
+            Serialized as <c>"query"</c> in the API response.
+            </param>
+            <param name="Keyword">
+            Usage information for keyword-based resources.  
+            These represent resources related to keyword tracking or analysis within the Kimola platform.
+            </param>
+        </member>
+        <member name="P:Kimola.Api.SubscriptionUsage.Link">
+            <summary>
+            Usage information for link-based resources.  
+            These represent API actions related to link tracking within the Kimola platform.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.SubscriptionUsage.Model">
+            <summary>
+            Usage information for model-based resources.  
+            These represent API actions related to machine learning models, such as running predictions or classifications.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.SubscriptionUsage.Query">
+            <summary>
+            Usage information for query-based resources.  
+            This includes all transactions like classification, scraping, and tracking customer feedback.  
+            Serialized as <c>"query"</c> in the API response.
+            </summary>
+        </member>
+        <member name="P:Kimola.Api.SubscriptionUsage.Keyword">
+            <summary>
+            Usage information for keyword-based resources.  
+            These represent resources related to keyword tracking or analysis within the Kimola platform.
+            </summary>
+        </member>
+    </members>
+</doc>
