@@ -19,10 +19,10 @@ dotnet pack -c Release
 ```csharp
 using Kimola.Api;
 
-var client = new KimolaClient(new KimolaClientOptions
-{
-    ApiKey = Environment.GetEnvironmentVariable("KIMOLA_API_KEY")!,
-    BaseUrl = "https://api.kimola.com/v1"
+var client = new KimolaClient(new KimolaClientOptions 
+{ 
+    ApiKey = "KIMOLA_API_KEY", 
+    BaseUrl = "https://api.kimola.com/v1" 
 });
 
 // 1) List presets
