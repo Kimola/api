@@ -20,6 +20,13 @@ To begin using the Kimola API, you’ll need a Kimola account. A free plan is av
 
 The API is intended to extend your own applications with Kimola’s research and analysis features — not to build a competing service. In other words, you can integrate Kimola’s capabilities into your products or workflows, but creating a product that replicates Kimola itself through the API is not permitted.  
 
+Integration can be accomplished via direct REST API calls, but Kimola also provides official SDKs to streamline development and reduce boilerplate. These SDKs are maintained for popular programming languages and are intended to simplify tasks such as authentication, error handling, and common integration patterns. By using an SDK, you can accelerate your development process and ensure best practices are followed when interacting with Kimola’s API.
+
+Official Kimola SDKs are available for:
+- **Python (PyPI):** [https://pypi.org/project/kimola/0.1.0](https://pypi.org/project/kimola/0.1.0)  
+- **Node.js (npm):** [https://www.npmjs.com/package/@kimola/api](https://www.npmjs.com/package/@kimola/api)  
+- **C# (.NET NuGet):** [https://www.nuget.org/packages/Kimola.Api](https://www.nuget.org/packages/Kimola.Api)
+
 Any application that uses data or analysis results from Kimola must also respect our [Privacy Policy](https://kimola.com/privacy-policy). This ensures that data collected, processed, or displayed through the API is handled responsibly and in line with user expectations.  
 
 If you notice something missing in the documentation or have suggestions to improve it, feel free to [open an issue](../../issues) here on GitHub — contributions and feedback are always welcome.
