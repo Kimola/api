@@ -2,19 +2,51 @@
 
 TypeScript-first Node.js SDK for the **Kimola API** (based on the spec you provided). Requires **Node 18+** (uses global `fetch`).
 
-## Install deps
+## Install (for app developers)
+Install the published package from npm into **your application** (no local build required):
 ```bash
-npm i
+npm install @kimola/api
+# or
+pnpm add @kimola/api
+# or
+yarn add @kimola/api
 ```
 
-## Run the example (no build needed)
+> Requires **Node 18+** (for global `fetch`). The package ships with types and works in ESM or CommonJS projects.
+
+## Quick start
+```ts
+// ESM / TypeScript
+import { KimolaClient } from "@kimola/api";
+
+const kimola = new KimolaClient({ apiKey: process.env.KIMOLA_API_KEY! });
+const presets = await kimola.getPresets({ pageSize: 5 });
+console.log(presets.items?.map(p => p.name));
+```
+
+**CommonJS example:**
+```js
+// CommonJS
+const { KimolaClient } = require("@kimola/api");
+const kimola = new KimolaClient({ apiKey: process.env.KIMOLA_API_KEY });
+```
+
+**Environment variable**
+```bash
+export KIMOLA_API_KEY=YOUR_API_KEY   # macOS/Linux
+# $env:KIMOLA_API_KEY='YOUR_API_KEY'  # Windows PowerShell
+```
+
+**Security note:** Use the SDK on the **server side**. Do not expose your API key in browser code.
+
+## Run the local example (contributors)
 ```bash
 export KIMOLA_API_KEY=YOUR_API_KEY   # macOS/Linux
 # $env:KIMOLA_API_KEY='YOUR_API_KEY'  # Windows PowerShell
 
 npm run dev
 ```
-`examples/quick.ts` imports the client directly from `src/index.ts` via `tsx`.
+`examples/quick.ts` imports the client directly from `src/index.ts` via `tsx`. This is only for local development and testing the SDK; application developers should install from npm as shown above.
 
 ## Build the library (ESM + CJS + typings)
 ```bash
@@ -22,11 +54,13 @@ npm run build
 ```
 
 ## Use in your own app
-After building and publishing (or linking), you can:
+After installing from npm, you can use the client like this:
 ```ts
 import { KimolaClient } from "@kimola/api";
 const kimola = new KimolaClient({ apiKey: process.env.KIMOLA_API_KEY! });
 ```
+
+> If you are working on the SDK itself, you can `npm link` this package into a test app, but most users should simply install from npm.
 
 ## Endpoints implemented
 - `GET /presets` → `getPresets`
