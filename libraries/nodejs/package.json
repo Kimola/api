@@ -14,28 +14,30 @@
     }
   },
   "sideEffects": false,
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kimola/api.git",
+    "directory": "libraries/nodejs"
+  },
+  "homepage": "https://github.com/Kimola/api/tree/main/libraries/nodejs#readme",
+  "bugs": { "url": "https://github.com/Kimola/api/issues" },
+  "files": ["dist", "README.md", "LICENSE"],
+
   "scripts": {
     "build": "tsup src/index.ts --dts --format esm,cjs --clean",
     "dev": "tsx examples/quick.ts",
     "dev:watch": "tsx --watch examples/quick.ts",
     "typecheck": "tsc --noEmit"
   },
-  "engines": {
-    "node": ">=18"
-  },
-  "keywords": [
-    "kimola",
-    "sdk",
-    "api",
-    "client",
-    "node",
-    "typescript"
-  ],
+  "engines": { "node": ">=18" },
+  "keywords": ["kimola", "sdk", "api", "client", "node", "typescript"],
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^24.5.1",
     "tsup": "^8.0.1",
     "tsx": "^4.16.2",
     "typescript": "^5.6.3"
-  }
+  },
+  "publishConfig": { "access": "public" }
 }
