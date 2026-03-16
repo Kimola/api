@@ -9,6 +9,7 @@ This repository hosts the official documentation for the Kimola API. It includes
 - [Resources](#resources)
 - [Endpoints](#endpoints)
   - [Presets](#get-presets)
+  - [Reports](#get-reports)
   - [Feeds](#get-feeds)
   - [Queries](#get-queries)
   - [Subscription](#get-subscriptionusage)
@@ -73,7 +74,9 @@ This section introduces the core resources available in the Kimola API.
 
 **Preset**: Presets are ready-to-use AI models hosted by Kimola that you can call directly—no training required. They power tasks like text classification and entity extraction and are intended to be embedded into your product workflows.
 
-**Feedy**: Feeds represent streams of customer feedback collected around specific keywords, brands, topics, or links. They act as the primary data sources in Kimola, continuously gathering public feedback from various platforms. Feeds can be inspected through the API and used to access the Reports generated from the collected feedback.
+**Report**: Reports represent structured research outputs generated from Feeds in Kimola. They transform the collected customer feedback into organized insights such as summaries, themes, motivations, pain points, and other analytical sections. Reports can be accessed through the API to inspect the analyses and retrieve the structured results produced from the underlying feedback dat
+
+**Feed**: Feeds represent streams of customer feedback collected around specific keywords, brands, topics, or links. They act as the primary data sources in Kimola, continuously gathering public feedback from various platforms. Feeds can be inspected through the API and used to access the Reports generated from the collected feedback.
 
 **Query**: Provides API endpoints to inspect Query consumption in Kimola. Each transaction such as text classification, scraping, or tracking (e.g., retrieving customer feedback from X) consumes from the user’s Query limit.
 
@@ -252,6 +255,183 @@ curl -X POST "https://api.kimola.com/v1/presets/8kq3w1h2f0c7b5m9r2t6y4u1/predict
   { "name": "Features and Quality", "probability": 0.95 }
 ]
 ```
+
+&nbsp;
+
+### GET /reports
+
+Retrieve a paginated list of Reports available to the authenticated client.
+
+Reports are structured research outputs generated from Feeds in Kimola. This endpoint lets you browse the Reports in your account and optionally filter them by name.
+
+> Auth required: `Authorization: Bearer <apiKey>`
+
+#### Query parameters
+
+Name In Type Required Default Notes
+`pageSize` query int no — Number of items per page.
+`pageIndex` query int no — Zero-based page index.
+`name` query string no — Filter Reports by name.
+
+#### Example request
+
+    curl -X GET "https://api.kimola.com/v1/reports?pageSize=10&pageIndex=0&name=Spotify" \
+      -H "Authorization: Bearer YOUR_API_KEY"
+
+#### Example response (200)
+
+    {
+      "total": 2,
+      "items": [
+        {
+          "code": "1064d7fc-801e-40dc-a91f-d51517a65203",
+          "name": "Spotify App Reviews Q1",
+          "title": "Spotify App Reviews Q1",
+          "...": "other report fields"
+        },
+        {
+          "code": "3ef5d6d0-6a6f-48f3-aeb9-3cf7d2cb3e9e",
+          "name": "Spotify App Reviews Q2",
+          "title": "Spotify App Reviews Q2",
+          "...": "other report fields"
+        }
+      ]
+    }
+
+#### Example error response (406)
+
+    Couldn't get reports.
+
+### GET /reports/{code}
+
+Retrieve a single Report by its unique identifier.
+
+A Report represents the structured analysis generated from a Feed in Kimola. This endpoint returns the report metadata and core properties used to inspect the research output before accessing its analyses.
+
+> Auth required: `Authorization: Bearer <apiKey>`
+
+#### Path parameters
+
+Name In Type Required Default Notes
+`code` path string (GUID) yes — Unique identifier of the Report.
+
+#### Example request
+
+    curl -X GET "https://api.kimola.com/v1/reports/1064d7fc-801e-40dc-a91f-d51517a65203" \
+      -H "Authorization: Bearer YOUR_API_KEY"
+
+#### Example response (200)
+
+    {
+      "code": "1064d7fc-801e-40dc-a91f-d51517a65203",
+      "name": "Spotify App Reviews Q2",
+      "title": "Spotify App Reviews Q2",
+      "...": "other report fields"
+    }
+
+#### Example error response (404)
+
+    Report does not exist.
+
+### GET /reports/{code}/analyses
+
+Retrieve the Analyses available for a specific Report.
+
+This endpoint returns the analysis items associated with the specified Report, such as Executive Summary, Motivations, Pain Points, Unmet Needs, and similar analytical outputs.
+
+> Auth required: `Authorization: Bearer <apiKey>`
+
+#### Path parameters
+
+Name In Type Required Default Notes
+`code` path string (GUID) yes — Unique identifier of the Report.
+
+#### Example request
+
+    curl -X GET "https://api.kimola.com/v1/reports/1064d7fc-801e-40dc-a91f-d51517a65203/analyses" \
+      -H "Authorization: Bearer YOUR_API_KEY"
+
+#### Example response (200)
+
+    {
+      "total": 4,
+      "items": [
+        {
+          "slug": "executive-summary",
+          "name": "Executive Summary",
+          "...": "other analysis fields"
+        },
+        {
+          "slug": "motivations",
+          "name": "Motivations",
+          "...": "other analysis fields"
+        }
+      ]
+    }
+
+#### Example error response (406)
+
+    Couldn't get analyses.
+
+### GET /reports/{code}/analyses/{slug}
+
+Retrieve a single Analysis for a specific Report by its slug.
+
+Analyses are the structured insight sections generated within a Report in Kimola. This endpoint returns a single Analysis identified by its slug, such as Executive Summary, Motivations, Pain Points, Unmet Needs, or other analytical sections available in the Report.
+
+> Auth required: `Authorization: Bearer <apiKey>`
+
+#### Path parameters
+
+Name In Type Required Default Notes
+`code` path string (GUID) yes — Unique identifier of the Report.
+`slug` path string yes — Unique slug identifier of the Analysis within the Report.
+
+#### Example request
+
+    curl -X GET "https://api.kimola.com/v1/reports/1064d7fc-801e-40dc-a91f-d51517a65203/analyses/executive-summary" \
+      -H "Authorization: Bearer YOUR_API_KEY"
+
+#### Example response (200)
+
+    {
+      "slug": "executive-summary",
+      "name": "Executive Summary",
+      "...": "other analysis fields"
+    }
+
+#### Example error response (404)
+
+    Analysis does not exist.
+
+### GET /reports/{code}/analyses/{slug}/data
+
+Retrieve the structured data produced by a specific Analysis within a Report.
+
+Analyses in Kimola generate structured outputs such as Executive Summary, Motivations, Pain Points, Unmet Needs, and other insight datasets. This endpoint returns the full structured result contained in the `data` field of the specified Analysis.
+
+> Auth required: `Authorization: Bearer <apiKey>`
+
+#### Path parameters
+
+Name In Type Required Default Notes
+`code` path string (GUID) yes — Unique identifier of the Report.
+`slug` path string yes — Unique slug identifier of the Analysis within the Report.
+
+#### Example request
+
+    curl -X GET "https://api.kimola.com/v1/reports/1064d7fc-801e-40dc-a91f-d51517a65203/analyses/executive-summary/data" \
+      -H "Authorization: Bearer YOUR_API_KEY"
+
+#### Example response (200)
+
+    {
+      "...": "structured analysis data"
+    }
+
+#### Example error response (404)
+
+    Analysis does not exist.
 
 &nbsp;
 
