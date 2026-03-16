@@ -9,6 +9,7 @@ This repository hosts the official documentation for the Kimola API. It includes
 - [Resources](#resources)
 - [Endpoints](#endpoints)
   - [Presets](#get-presets)
+  - [Feeds](#get-feeds)
   - [Queries](#get-queries)
   - [Subscription](#get-subscriptionusage)
 
@@ -70,7 +71,9 @@ When authentication fails, the API returns plaintext error messages with the fol
 ## Resources
 This section introduces the core resources available in the Kimola API.
 
-**Preset**: Presets are ready-to-use AI models hosted by Kimola that you can call directly—no training required. They power tasks like text classification and entity extraction and are intended to be embedded into your product workflows.  
+**Preset**: Presets are ready-to-use AI models hosted by Kimola that you can call directly—no training required. They power tasks like text classification and entity extraction and are intended to be embedded into your product workflows.
+
+**Feedy**: Feeds represent streams of customer feedback collected around specific keywords, brands, topics, or links. They act as the primary data sources in Kimola, continuously gathering public feedback from various platforms. Feeds can be inspected through the API and used to access the Reports generated from the collected feedback.
 
 **Query**: Provides API endpoints to inspect Query consumption in Kimola. Each transaction such as text classification, scraping, or tracking (e.g., retrieving customer feedback from X) consumes from the user’s Query limit.
 
@@ -252,136 +255,6 @@ curl -X POST "https://api.kimola.com/v1/presets/8kq3w1h2f0c7b5m9r2t6y4u1/predict
 
 &nbsp;
 
-### GET /queries
-
-Retrieve a **paginated list of Queries** consumed within a specified date range.  
-Use this endpoint to review how your account spent Queries (e.g., classification, scraping, tracking) over time.  
-All dates are interpreted as **UTC**.
-
-> **Auth required:** `Authorization: Bearer <apiKey>`
-
-#### Query parameters
-
-| Name        | In    | Type   | Required | Default | Notes |
-|-------------|-------|--------|----------|---------|-------|
-| `pageIndex` | query | int    | no       | `0`     | Zero-based page index. |
-| `pageSize`  | query | int    | no       | `10`    | Number of items per page. **Maximum 10**; higher values are capped to 10. |
-| `startDate` | query | string (ISO 8601) | no | `now(UTC) - 1 month` | Start of the date range (UTC). If omitted, the API uses one month before current UTC time. |
-| `endDate`   | query | string (ISO 8601) | no | `now(UTC)` | End of the date range (UTC). If omitted, the API uses current UTC time. |
-
-#### Example request
-```bash
-curl -X GET "https://api.kimola.com/v1/queries?pageIndex=0&pageSize=10&startDate=2025-08-15T00:00:00Z&endDate=2025-09-15T23:59:59Z" \
-  -H "Authorization: Bearer YOUR_API_KEY"
-```
-
-#### Example response (200)
-```json
-[
-  {
-    "report": {
-      "code": "1064d7fc-801e-40dc-a91f-d51517a65203",
-      "name": "...",
-      "title": "..."
-    },
-    "item": {
-      "code": "397c4d3c-67eb-4eb2-ad6d-613355939b9a",
-      "name": "...",
-      "type": "..."
-    },
-    "type": "Classification",
-    "amount": 141,
-    "date": "2025-08-30T00:00:00.000000Z"
-  }
-]
-```
-
-&nbsp;
-
-### GET /queries/statistics
-
-Return **Query consumption statistics grouped by category** within the specified date range.  
-Categories include `Classification`, `Tracking`, and `Scraping`. Use this endpoint to see how your allocation is spent over time. All dates are interpreted as **UTC**.
-
-> **Auth required:** `Authorization: Bearer <apiKey>`
-
-#### Query parameters
-
-| Name        | In    | Type                 | Required | Default            | Notes |
-|-------------|-------|----------------------|----------|--------------------|-------|
-| `startDate` | query | string (ISO 8601 UTC) | no       | `now(UTC) - 1 month` | Start of the date range. If omitted, the API uses one month before current UTC time. |
-| `endDate`   | query | string (ISO 8601 UTC) | no       | `now(UTC)`         | End of the date range. If omitted, the API uses current UTC time. |
-
-#### Example request
-
-```bash
-curl -X GET "https://api.kimola.com/v1/queries/statistics?startDate=2025-08-15T00:00:00Z&endDate=2025-09-15T23:59:59Z" \
-  -H "Authorization: Bearer YOUR_API_KEY"
-```
-
-#### Example response (200)
-```json
-[
-  { "name": "Classification", "count": 365, "ratio": 0.73, "percentage": 73 },
-  { "name": "Tracking",       "count": 105,   "ratio": 0.21, "percentage": 21  },
-  { "name": "Scraping",       "count": 30,   "ratio": 0.06, "percentage": 6  }
-]
-```
-
-&nbsp;
-
-### GET /subscription/usage
-
-Retrieve the **current subscription usage** for the logged-in user.  
-This endpoint reports how many resources have been consumed in the user’s plan, including Queries, Models, Keywords, and Links.  
-
-The optional `date` parameter allows you to check usage for previous billing periods. If omitted, the endpoint defaults to the current UTC date and returns data for the active subscription period.
-
-> **Auth required:** `Authorization: Bearer <apiKey>`
-
-#### Query parameters
-
-| Name  | In    | Type     | Required | Default           | Notes |
-|-------|-------|----------|----------|-------------------|-------|
-| `date` | query | string (ISO 8601 UTC) | no | `DateTime.UtcNow` | A UTC date used to fetch usage for a past subscription period. |
-
-#### Example request
-
-```bash
-curl -X GET "https://api.kimola.com/v1/subscription/usage?date=2025-09-15T00:00:00Z" \
-  -H "Authorization: Bearer YOUR_API_KEY"
-```
-
-#### Example response (200)
-```json
-{
-  "link": {
-    "count": 8,
-    "limit": 1000,
-    "percentage": 0.8,
-    "available": 992
-  },
-  "model": {
-    "count": 222,
-    "limit": 1000,
-    "percentage": 22.2,
-    "available": 778
-  },
-  "query": {
-    "count": 119502,
-    "limit": 10000000,
-    "percentage": 1.2,
-    "available": 9880498
-  },
-  "keyword": {
-    "count": 43,
-    "limit": 1000,
-    "percentage": 4.3,
-    "available": 957
-  }
-}
-```
-
 ### GET /feeds
 
 Retrieve a paginated list of Feeds available to the authenticated client.
@@ -532,3 +405,135 @@ Name In Type Required Default Notes
 #### Example error response (404)
 
     This feed does not have a report.
+
+&nbsp;
+
+### GET /queries
+
+Retrieve a **paginated list of Queries** consumed within a specified date range.  
+Use this endpoint to review how your account spent Queries (e.g., classification, scraping, tracking) over time.  
+All dates are interpreted as **UTC**.
+
+> **Auth required:** `Authorization: Bearer <apiKey>`
+
+#### Query parameters
+
+| Name        | In    | Type   | Required | Default | Notes |
+|-------------|-------|--------|----------|---------|-------|
+| `pageIndex` | query | int    | no       | `0`     | Zero-based page index. |
+| `pageSize`  | query | int    | no       | `10`    | Number of items per page. **Maximum 10**; higher values are capped to 10. |
+| `startDate` | query | string (ISO 8601) | no | `now(UTC) - 1 month` | Start of the date range (UTC). If omitted, the API uses one month before current UTC time. |
+| `endDate`   | query | string (ISO 8601) | no | `now(UTC)` | End of the date range (UTC). If omitted, the API uses current UTC time. |
+
+#### Example request
+```bash
+curl -X GET "https://api.kimola.com/v1/queries?pageIndex=0&pageSize=10&startDate=2025-08-15T00:00:00Z&endDate=2025-09-15T23:59:59Z" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+#### Example response (200)
+```json
+[
+  {
+    "report": {
+      "code": "1064d7fc-801e-40dc-a91f-d51517a65203",
+      "name": "...",
+      "title": "..."
+    },
+    "item": {
+      "code": "397c4d3c-67eb-4eb2-ad6d-613355939b9a",
+      "name": "...",
+      "type": "..."
+    },
+    "type": "Classification",
+    "amount": 141,
+    "date": "2025-08-30T00:00:00.000000Z"
+  }
+]
+```
+
+&nbsp;
+
+### GET /queries/statistics
+
+Return **Query consumption statistics grouped by category** within the specified date range.  
+Categories include `Classification`, `Tracking`, and `Scraping`. Use this endpoint to see how your allocation is spent over time. All dates are interpreted as **UTC**.
+
+> **Auth required:** `Authorization: Bearer <apiKey>`
+
+#### Query parameters
+
+| Name        | In    | Type                 | Required | Default            | Notes |
+|-------------|-------|----------------------|----------|--------------------|-------|
+| `startDate` | query | string (ISO 8601 UTC) | no       | `now(UTC) - 1 month` | Start of the date range. If omitted, the API uses one month before current UTC time. |
+| `endDate`   | query | string (ISO 8601 UTC) | no       | `now(UTC)`         | End of the date range. If omitted, the API uses current UTC time. |
+
+#### Example request
+
+```bash
+curl -X GET "https://api.kimola.com/v1/queries/statistics?startDate=2025-08-15T00:00:00Z&endDate=2025-09-15T23:59:59Z" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+#### Example response (200)
+```json
+[
+  { "name": "Classification", "count": 365, "ratio": 0.73, "percentage": 73 },
+  { "name": "Tracking",       "count": 105,   "ratio": 0.21, "percentage": 21  },
+  { "name": "Scraping",       "count": 30,   "ratio": 0.06, "percentage": 6  }
+]
+```
+
+&nbsp;
+
+### GET /subscription/usage
+
+Retrieve the **current subscription usage** for the logged-in user.  
+This endpoint reports how many resources have been consumed in the user’s plan, including Queries, Models, Keywords, and Links.  
+
+The optional `date` parameter allows you to check usage for previous billing periods. If omitted, the endpoint defaults to the current UTC date and returns data for the active subscription period.
+
+> **Auth required:** `Authorization: Bearer <apiKey>`
+
+#### Query parameters
+
+| Name  | In    | Type     | Required | Default           | Notes |
+|-------|-------|----------|----------|-------------------|-------|
+| `date` | query | string (ISO 8601 UTC) | no | `DateTime.UtcNow` | A UTC date used to fetch usage for a past subscription period. |
+
+#### Example request
+
+```bash
+curl -X GET "https://api.kimola.com/v1/subscription/usage?date=2025-09-15T00:00:00Z" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+#### Example response (200)
+```json
+{
+  "link": {
+    "count": 8,
+    "limit": 1000,
+    "percentage": 0.8,
+    "available": 992
+  },
+  "model": {
+    "count": 222,
+    "limit": 1000,
+    "percentage": 22.2,
+    "available": 778
+  },
+  "query": {
+    "count": 119502,
+    "limit": 10000000,
+    "percentage": 1.2,
+    "available": 9880498
+  },
+  "keyword": {
+    "count": 43,
+    "limit": 1000,
+    "percentage": 4.3,
+    "available": 957
+  }
+}
+```
