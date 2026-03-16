@@ -91,6 +91,11 @@ Below is the full list of available endpoints in the Kimola API. Click on an end
 [POST /presets/{key}/predictions](#post-presetskeypredictions) — Run predictions on input text using a Preset.
 &nbsp;  
 
+[GET /reports](#get-reports) - Retrieve a paginated list of Reports.
+[GET /reports/{code}](#get-reports) - Retrieve a single Report by key.
+[GET /reports/{code}/analyses/{slug}](#get-reportscodeanalysesslug) - Retrieve an Analysis for a Report by slug.
+[GET /reports/{code}/analyses/{slug}/data](#get-reportscodeanalysesslugdata) - Retrieve the data of an Analysis for a Report by slug.
+
 [GET /queries](#get-queries) — Retrieve a paginated list of Queries with optional date range.  
 [GET /queries/statistics](#get-queriesstatistics) — Retrieve aggregated Query consumption statistics by category.
 &nbsp;  
