@@ -381,3 +381,154 @@ curl -X GET "https://api.kimola.com/v1/subscription/usage?date=2025-09-15T00:00:
   }
 }
 ```
+
+### GET /feeds
+
+Retrieve a paginated list of Feeds available to the authenticated client.
+
+Use this endpoint to browse the Feeds in your account and optionally filter them by Feed name. Results can be paginated with `pageSize` and `pageIndex`.
+
+> Auth required: `Authorization: Bearer <apiKey>`
+
+#### Query parameters
+
+Name In Type Required Default Notes
+`pageSize` query int no — Number of items per page.
+`pageIndex` query int no — Zero-based page index.
+`name` query string no — Filter Feeds by name.
+
+#### Example request
+
+    curl -X GET "https://api.kimola.com/v1/feeds?pageSize=10&pageIndex=0&name=Spotify" \
+      -H "Authorization: Bearer YOUR_API_KEY"
+
+#### Example response (200)
+
+    {
+      "total": 2,
+      "items": [
+        {
+          "code": "4a3c7e2d-3b91-45dc-91ab-2f7289b3c6a1",
+          "name": "Spotify Reviews",
+          "...": "other feed fields"
+        },
+        {
+          "code": "c1b62431-5c84-48d2-87d0-4fc0bc4c2d8e",
+          "name": "Apple Music Reviews",
+          "...": "other feed fields"
+        }
+      ]
+    }
+
+#### Example error response (406)
+
+    Couldn't get feeds.
+
+### GET /feeds/{code}
+
+Retrieve a single Feed by its unique code.
+
+A Feed in Kimola represents a stream of customer feedback gathered around a defined topic, keyword set, brand, or link. Use this endpoint when you already know the Feed code and want to inspect its details.
+
+> Auth required: `Authorization: Bearer <apiKey>`
+
+#### Path parameters
+
+Name In Type Required Default Notes
+`code` path string (GUID) yes — Unique identifier of the Feed.
+
+#### Example request
+
+    curl -X GET "https://api.kimola.com/v1/feeds/4a3c7e2d-3b91-45dc-91ab-2f7289b3c6a1" \
+      -H "Authorization: Bearer YOUR_API_KEY"
+
+#### Example response (200)
+
+    {
+      "code": "4a3c7e2d-3b91-45dc-91ab-2f7289b3c6a1",
+      "name": "Spotify Reviews",
+      "...": "other feed fields"
+    }
+
+#### Example error response (404)
+
+    Feed does not exist.
+
+### GET /feeds/{code}/reports
+
+Retrieve a paginated list of Reports generated for a specific Feed.
+
+Reports in Kimola are generated outputs derived from a Feed and provide structured insight into the collected customer feedback. Use this endpoint to browse the Reports associated with a Feed.
+
+> Auth required: `Authorization: Bearer <apiKey>`
+
+#### Path parameters
+
+Name In Type Required Default Notes
+`code` path string (GUID) yes — Unique identifier of the Feed.
+
+#### Query parameters
+
+Name In Type Required Default Notes
+`pageSize` query int no — Number of items per page.
+`pageIndex` query int no — Zero-based page index.
+
+#### Example request
+
+    curl -X GET "https://api.kimola.com/v1/feeds/4a3c7e2d-3b91-45dc-91ab-2f7289b3c6a1/reports?pageSize=10&pageIndex=0" \
+      -H "Authorization: Bearer YOUR_API_KEY"
+
+#### Example response (200)
+
+    {
+      "total": 2,
+      "items": [
+        {
+          "code": "1064d7fc-801e-40dc-a91f-d51517a65203",
+          "name": "Spotify App Reviews Q1",
+          "title": "Spotify App Reviews Q1",
+          "...": "other report fields"
+        },
+        {
+          "code": "3ef5d6d0-6a6f-48f3-aeb9-3cf7d2cb3e9e",
+          "name": "Spotify App Reviews Q2",
+          "title": "Spotify App Reviews Q2",
+          "...": "other report fields"
+        }
+      ]
+    }
+
+#### Example error response (406)
+
+    Couldn't get reports.
+
+### GET /feeds/{code}/reports/recent
+
+Retrieve the most recent Report generated for a specific Feed.
+
+This is a convenience endpoint for accessing the latest available Report of a Feed without listing and sorting all associated Reports.
+
+> Auth required: `Authorization: Bearer <apiKey>`
+
+#### Path parameters
+
+Name In Type Required Default Notes
+`code` path string (GUID) yes — Unique identifier of the Feed.
+
+#### Example request
+
+    curl -X GET "https://api.kimola.com/v1/feeds/4a3c7e2d-3b91-45dc-91ab-2f7289b3c6a1/reports/recent" \
+      -H "Authorization: Bearer YOUR_API_KEY"
+
+#### Example response (200)
+
+    {
+      "code": "1064d7fc-801e-40dc-a91f-d51517a65203",
+      "name": "Spotify App Reviews Q2",
+      "title": "Spotify App Reviews Q2",
+      "...": "other report fields"
+    }
+
+#### Example error response (404)
+
+    This feed does not have a report.
